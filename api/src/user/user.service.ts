@@ -51,9 +51,9 @@ export class UserService {
     if (!isPasswordmatched) {
       throw new BadRequestException('Invalid Credentials');
     }
-    const payload = { id: user.id, email: user.email };
+    delete user.password;
     return {
-      token: this.jwtService.sign(payload),
+      token: this.jwtService.sign({ user }),
     };
   }
 
