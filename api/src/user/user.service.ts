@@ -25,10 +25,7 @@ export class UserService {
     if (user) {
       throw new BadRequestException('User Already exist');
     }
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      process.env.SALT_ROUNDS || 15,
-    );
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 15);
     const newUser = this.userRepo.create(createUserDto);
     newUser.password = hashedPassword;
     return await this.userRepo.save(newUser);
@@ -73,6 +70,10 @@ export class UserService {
     user.email = updateUserDto.email || user.email;
     user.username = updateUserDto.username || user.username;
     return await this.userRepo.save(user);
+  }
+
+  async findAll() {
+    return await this.userRepo.find();
   }
 
   remove(id: number) {
